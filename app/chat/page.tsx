@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import moment from "moment";
 import axios from "axios";
 import {
   Flex,
@@ -11,6 +12,8 @@ import {
   Text,
   IconButton,
   useToast,
+  Stack,
+  Skeleton,
 } from "@chakra-ui/react";
 import AuthGuard from "@/components/AuthGuard";
 import DashboardLayout from "@/components/DashboardLayout";
@@ -31,6 +34,7 @@ export default function Chat() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState<boolean>(false);
   const toast = useToast(); // ✅ Initialize Chakra Toast
+  const [loading, setLoading] = useState<boolean>(true);
 
   // ✅ Fetch previous chat messages when page loads
   useEffect(() => {
@@ -58,6 +62,8 @@ export default function Chat() {
         );
       } catch (error) {
         console.error("❌ Error fetching chat history:", error);
+      } finally {
+        setLoading(false);
       }
     }
 
@@ -127,6 +133,15 @@ export default function Chat() {
   return (
     <AuthGuard>
       <DashboardLayout>
+        {loading && (
+          <Flex w={"100%"} height={"100%"} justify={"center"} align={"center"}>
+            <Stack w="100%" alignItems="center" justifyContent={"center"}>
+              <Skeleton width="300px" height="20px" />
+              <Skeleton width="300px" height="20px" />
+              <Skeleton width="300px" height="20px" />
+            </Stack>
+          </Flex>
+        )}
         <Flex w="100%" direction="column">
           <Heading>Chat with VL Bot</Heading>
           <VStack
@@ -163,7 +178,7 @@ export default function Chat() {
                   {msg.content}
                 </Flex>
                 <Text fontSize="sm" color="gray.500" mb="2px">
-                  {msg.timestamp}
+                  {moment(msg.timestamp).format("MMMM Do YYYY, h:mm A")}
                 </Text>
               </Flex>
             ))}

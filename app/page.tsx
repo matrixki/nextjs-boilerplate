@@ -340,7 +340,9 @@ export default function Home() {
           </Flex>
           <Flex w="100%">
             <MetricsCard title="🔍 Slack Message Summary">
-              <Box>Summary of yesterday's channel messages</Box>
+              <Heading as="h6" size="sm" mb="16px">
+                Summary of yesterday's channel messages:
+              </Heading>
               <Box>{messagesSummary}</Box>
             </MetricsCard>
           </Flex>
