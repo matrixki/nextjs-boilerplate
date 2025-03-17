@@ -16,10 +16,12 @@ import AuthGuard from "@/components/AuthGuard";
 import DashboardLayout from "@/components/DashboardLayout";
 import { useSession } from "next-auth/react";
 import { AddIcon } from "@chakra-ui/icons";
+import { timeStamp } from "console";
 
 interface ChatMessage {
   role: "user" | "bot";
   content: string;
+  timestamp?: string;
 }
 
 export default function Chat() {
@@ -42,8 +44,16 @@ export default function Chat() {
           response.data.conversations
             .filter((msg: any) => msg.source === "dashboard") // ✅ Keep only "dashboard" messages
             .flatMap((msg: any) => [
-              { role: "user", content: msg.user_message }, // ✅ User message
-              { role: "bot", content: msg.bot_response }, // ✅ Bot response
+              {
+                role: "user",
+                content: msg.user_message,
+                timestamp: msg.timestamp,
+              }, // ✅ User message
+              {
+                role: "bot",
+                content: msg.bot_response,
+                timestamp: msg.timestamp,
+              }, // ✅ Bot response
             ])
         );
       } catch (error) {
@@ -152,6 +162,9 @@ export default function Chat() {
                 >
                   {msg.content}
                 </Flex>
+                <Text fontSize="sm" color="gray.500" mb="2px">
+                  {msg.timestamp}
+                </Text>
               </Flex>
             ))}
           </VStack>

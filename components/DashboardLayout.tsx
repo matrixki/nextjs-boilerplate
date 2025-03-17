@@ -59,7 +59,13 @@ export default function DashboardLayout({
       </Box>
 
       {/* ✅ Main Content Area */}
-      <Box flex="1" p={6} bg="gray.100" position={"relative"}>
+      <Box
+        flex="1"
+        p={6}
+        bg="gray.100"
+        position={"relative"}
+        overflowY={"auto"}
+      >
         {children}
       </Box>
     </Flex>
